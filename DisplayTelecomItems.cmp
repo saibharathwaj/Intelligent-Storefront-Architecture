@@ -1,0 +1,123 @@
+<aura:component implements="force:appHostable,lightning:isUrlAddressable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes"
+                access="global"
+                controller="TelecomDetails">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="telName" type="String"/>
+    <aura:attribute name="telId" type="String"/>
+    <aura:attribute name="telecomList" type="Object"/>
+    <aura:attribute name="recordList" type="Object"/>
+    <div class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-account" title="account">
+                            <lightning:icon iconName="standard:avatar"/>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span class="slds-page-header__title slds-truncate" title="accountName">MR. SAI BHARATHWAJ</span>
+                                </h1>
+                            </div>
+                        </div>
+                        <p class="slds-page-header__name-meta">Maraimalai Nagar- Chennai</p>
+                    </div>
+                    <div class="slds-media__figure" style="float:right;">
+                       <!-- <span class="slds-icon_container slds-icon-standard-account" title="contactRequest">
+                            <lightning:icon iconName="utility:contact_request"/>
+                        </span>
+                        &nbsp;
+                        <span class="slds-icon_container slds-icon-standard-account" title="QA">
+                            <lightning:icon iconName="utility:questions_and_answers"/>
+                        </span>
+                        &nbsp;
+                        <span class="slds-icon_container slds-icon-standard-account" title="logout">
+                            <lightning:icon iconName="utility:logout"/>
+                        </span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+      <div class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <!-- <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-opportunity" title="opportunity">
+                            <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#opportunity"></use>
+                            </svg>
+                            <span class="slds-assistive-text">opportunity</span>
+                        </span>
+                    </div>-->
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span class="slds-page-header__title slds-truncate" title="{!v.telName}">{!v.telName}</span>
+                                </h1>
+                            </div>
+                        </div>
+                       <!-- <p class="slds-page-header__name-meta">{!v.resCuisine}</p>-->
+                    </div>
+                    <aura:if isTrue="{!v.recordList.length > 0}">
+                        <c:CartInfo foodcartItemList="{!v.recordList}"/>
+                    </aura:if>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="c-container">
+        <lightning:layout multipleRows="true">
+            <lightning:layoutItem padding="around-small" size="12">
+                <lightning:layout>
+                    <lightning:layoutItem padding="around-small" size="12">
+                        <div class="page-section page-main">
+                            <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+                                <aura:iteration items="{!v.telecomList}" var="item" indexVar="index">
+                                    <lightning:card title="{!item.Name}" iconName="utility:food_and_drink">
+                                        <p class="slds-p-horizontal_small">
+                                            <div class="slds-grid slds-gutters">
+                                                <div class="slds-col slds-size_1-of-3">
+                                                    
+                                                </div>
+                                                <div class="slds-col slds-size_2-of-3" style="text-align: right;">
+                                                    Rs.{!item.Item_Price__c}
+                                                </div>
+                                            </div>
+                                        </p>
+                                        <aura:set attribute="actions">
+                                            <lightning:button name="{!item.Id}"
+                                                              label="Add to Cart"
+                                                              variant="brand"
+                                                              value="{!index}"
+                                                              onclick="{!c.addToCart}"/>
+                                            
+                                        </aura:set>
+                                        <aura:set attribute="footer">
+                                            <!--<lightning:badge label="{!item.Review_Count__c +' Review'}"/>-->
+                                            <!--<lightning:badge label="{!item.Tags__c}"/>-->
+                                            
+                                            <lightning:button name="{!item.Id}"
+                                                              label="Add To Wishlist"
+                                                              variant="brand"
+                                                              value="{!index}"
+                                                              onclick="{!c.addtowishlist}"/>
+                                        </aura:set>
+                                    </lightning:card>
+                                </aura:iteration>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                </lightning:layout>
+            </lightning:layoutItem>
+            
+        </lightning:layout>
+    </div>
+</aura:component>

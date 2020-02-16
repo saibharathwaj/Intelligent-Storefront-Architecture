@@ -1,0 +1,72 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId"
+                access="global"
+                controller="CustomSentimentalAnalysis">
+    <aura:attribute name="recordId" type="String"/>
+   
+   <!-- <aura:handler name="init" value="{!this}" action="{!c.doLoad}"/>-->
+    <aura:attribute name="cartItemList" type="Object"/>
+    <aura:attribute name="positive" type="Integer"/>
+    <aura:attribute name="negative" type="Integer"/>
+    <aura:attribute name="neutral" type="Integer"/>
+    <aura:attribute name="showData" type="Boolean"/>
+    <aura:attribute name="sentiment"
+                    type="String"
+                    required="true"
+                    default="Great Products delivered Safely"/>
+    <aura:attribute name="modelId"
+                    type="String"
+                    required="true"
+                    default="CommunitySentiment"/>
+    <ltng:require scripts="{!$Resource.Chartjs+ '/Chart.min.js'}" 
+                  afterScriptsLoaded="{!c.predictSentiment}"/>
+   <!-- <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-4"><b>Item</b></div>
+        <div class="slds-col slds-size_1-of-4"><b>Review</b></div>
+        <div class="slds-col slds-size_2-of-4"></div>
+    </div>
+     <aura:iteration items="{!v.cartItemList}" var="item" indexVar="index">
+          <div class="slds-grid slds-wrap">
+              <div class="slds-col slds-size_1-of-4">
+                <a href="JavaScript:void(0);">
+                    {!v.item.Generic_Item__r.Name}
+                </a>
+             </div>
+              <div class="slds-col slds-size_1-of-4">
+                  <lightning:input aura:id="formInp" label="Enter text for Sentiment"
+                         name="Sentiment Text"
+                         value="{!v.sentiment}"
+                         required="true"/> 
+              </div>
+              <div class="slds-col slds-size_1-of-4">
+                  
+              </div>
+          </div>
+     </aura:iteration>-->
+    <form class="slds-form--stacked">          
+        <lightning:input aura:id="formInp" label="Review"
+                         name="Sentiment Text"
+                         value="{!v.sentiment}"
+                         required="true"/>
+        <lightning:button label="Predict Sentiment" 
+                          class="slds-m-top--medium"
+                          variant="brand"
+                          onclick="{!c.predictSentiment}"/>
+    </form>
+    <aura:if isTrue="{!v.showData}">
+        <lightning:input name="positiveInp" 
+                         disabled="true"
+                         value="{!v.positive}"
+                         label="Positive Review"/>
+        <lightning:input name="negativeInp"
+                         disabled="true"
+                         value="{!v.negative}"
+                         label="Negative Review"/>
+        <lightning:input name="neutralInp"
+                         disabled="true"
+                         value="{!v.neutral}"
+                         label="Neutral Review"/>
+    </aura:if>
+     <canvas aura:id="polar-chart" width="50" height="50" 
+style="display:initial; height:250px; width:250px; "></canvas>
+ 
+</aura:component>

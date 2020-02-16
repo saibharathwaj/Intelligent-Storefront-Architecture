@@ -1,0 +1,42 @@
+<aura:component controller="CreateReviewRecord" 
+				implements="force:appHostable,force:lightningQuickActionWithoutHeader,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+				access="global" >
+     <!-- Include Static Resource-->
+    <ltng:require styles="/resource/bootstrap/css/bootstrap.min.css" 
+				  scripts="/resource/bootstrap/js/jquery.js,/resource/bootstrap/js/bootstrap.min.js"/>
+    
+    <!-- Define Attribute-->
+    <!-- Create attribute to store lookup value as a sObject--> 
+    <aura:attribute name="cartItem" type="Cart_Item__c" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+
+    <aura:attribute name="selectedLookUpRecord" type="sObject" default="{}"/>
+    <aura:attribute name="review" type="Review__c" default="{'sobjectType': 'Review__c',
+                         'Generic_Item__c': '',
+                         'Review_Score__c': '',
+                         'Review_Comment__c': '', 
+                         'Food_Item__c': ''
+                       }"/>
+    
+     <div class="container-fluid">
+        <h3>Please Enter The Review Details</h3>
+        <div class="form-group">
+            <label>Generic Item</label>
+            <ui:inputText class="form-control" value="{!v.review.Generic_Item__c}"/>
+        </div>
+        <div class="form-group">
+            <label>Review score</label>
+            <ui:inputText class="form-control" value="{!v.review.Review_Score__c}"/>
+        </div>
+         <div class="form-group">
+          <c:customLookup objectAPIName="Generic_Item__c" IconName="standard:account"
+                          selectedRecord="{!v.selectedLookUpRecord}" label="Generic Item"/>
+         </div>
+        <iframe src="{!'https://hackwithinfy-dev-ed--c.visualforce.com/apex/FindSentiment'}" width="100%" height="300px;" frameBorder="0"/> 
+        
+    </div>
+    <div class="col-md-4 text-center">
+        <ui:button class="btn btn-default" press="{!c.create}">Submit</ui:button>
+  </div>
+</aura:component>

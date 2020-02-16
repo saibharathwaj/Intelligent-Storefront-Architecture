@@ -1,0 +1,175 @@
+<aura:component implements="force:appHostable,lightning:isUrlAddressable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes"
+                access="global"
+                controller="RestaurantController">
+    <aura:attribute name="restaurantList" type="Object"/>
+     <aura:attribute name="url" type="String"/>
+    <lightning:navigation aura:id="navService"/>
+    <aura:attribute name="pageReference" type="Object"/>
+	<div class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-account" title="account">
+                            <lightning:icon iconName="standard:avatar"/>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span class="slds-page-header__title slds-truncate" title="accountName">MR. SAI BHARATHWAJ</span>
+                                </h1>
+                            </div>
+                        </div>
+                        <p class="slds-page-header__name-meta">Maraimalai Nagar- Chennai</p>
+                    </div>
+                    <div class="slds-media__figure" style="float:right;">
+                       <!-- <span class="slds-icon_container slds-icon-standard-account" title="contactRequest">
+                            <lightning:icon iconName="utility:contact_request"/>
+                        </span>
+                        &nbsp;
+                        <span class="slds-icon_container slds-icon-standard-account" title="QA">
+                            <lightning:icon iconName="utility:questions_and_answers"/>
+                        </span>
+                        &nbsp;
+                        <span class="slds-icon_container slds-icon-standard-account" title="logout">
+                            <lightning:icon iconName="utility:logout"/>
+                        </span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slds-form-element">
+        <div class="c-container">
+            <lightning:layout horizontalAlign="space">
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="header-column">
+                        <div onkeyup="{!c.handleKeyup}">
+                            <lightning:input aura:id="resSearch"
+                                             name="resSearch"
+                                             label="Restaurant Name"
+                                             type="Search"/>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+    </div>
+    <!-- Loading Searched Restaurant Starts-->
+    <div>
+        <lightning:tabset variant="vertical">
+            <lightning:tab label="Restaurant" iconName="utility:approval">
+                <div class="slds-grid slds-wrap">
+                    <aura:iteration items="{!v.restaurantList}" var="item" indexVar="index">
+                        <aura:if isTrue="{!item.Bulk_Order__c == false}">
+                            <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+                                <lightning:card title="{!item.Restaurant_Name__c}" iconName="utility:food_and_drink">
+                                    <p class="slds-p-horizontal_small">
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col slds-size_1-of-3">
+                                                <!--<img src="{!$Resource.BeerImg}"/>-->
+                                                <aura:if isTrue="{!item.Cuisines__c == 'Biriyani'}">
+                                                    <img src="{!$Resource.biriyani}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__C =='Arabic'}">
+                                                    <img src="{!$Resource.arabic}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__c == 'Chinese'}">
+                                                    <img src="{!$Resource.Chinese}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__c == 'North Indian'}">
+                                                    <img src="{!$Resource.NorthIndian}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__c == 'South Indian'}">
+                                                    <img src="{!$Resource.SouthIndian}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__c == 'Tandoori'}">
+                                                    <img src="{!$Resource.Tandoori}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__c == 'Italian'}">
+                                                    <img src="{!$Resource.Italian}"/>
+                                                </aura:if>
+                                            </div>
+                                            <div class="slds-col slds-size_2-of-3" style="text-align: right;">
+                                                Rs.{!item.Average_Cost_for_two_person__c} for two
+                                            </div>
+                                        </div>
+                                    </p>
+                                    <aura:set attribute="actions">
+                                        <lightning:button name="{!item.Id}"
+                                                          label="Order Food"
+                                                          variant="brand"
+                                                          value="{!item.Cuisines__c}"
+                                                          onclick="{!c.navigateFood}"/>
+                                    </aura:set>
+                                    <aura:set attribute="footer">
+                                        <lightning:badge label="{!item.Review_Count__c +' Review'}"/>
+                                        <lightning:badge label="{!item.Cuisines__c}"/>
+                                    </aura:set>
+                                </lightning:card>
+                            </div>
+                        </aura:if>
+                    </aura:iteration>
+                </div>
+            </lightning:tab>
+            <lightning:tab label="Bulk Orders" iconName="utility:einstein">
+                <div class="slds-grid slds-wrap">
+                    <aura:iteration items="{!v.restaurantList}" var="item" indexVar="index">
+                        <aura:if isTrue="{!item.Bulk_Order__c}">
+                            <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+                                <lightning:card title="{!item.Restaurant_Name__c}" iconName="utility:food_and_drink">
+                                    <p class="slds-p-horizontal_small">
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col slds-size_1-of-3">
+                                                <!--<img src="{!$Resource.BeerImg}"/>-->
+                                                <aura:if isTrue="{!item.Cuisines__c == 'Biriyani'}">
+                                                    <img src="{!$Resource.biriyani}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__C =='Arabic'}">
+                                                    <img src="{!$Resource.arabic}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__c == 'Chinese'}">
+                                                    <img src="{!$Resource.Chinese}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__c == 'North Indian'}">
+                                                    <img src="{!$Resource.NorthIndian}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__c == 'South Indian'}">
+                                                    <img src="{!$Resource.SouthIndian}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__c == 'Tandoori'}">
+                                                    <img src="{!$Resource.Tandoori}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!item.Cuisines__c == 'Italian'}">
+                                                    <img src="{!$Resource.Italian}"/>
+                                                </aura:if>
+                                            </div>
+                                            <div class="slds-col slds-size_2-of-3">
+                                                Rs.{!item.Average_Cost_for_two_person__c} for two
+                                            </div>
+                                        </div>
+                                    </p>
+                                    <aura:set attribute="actions">
+                                        <lightning:button name="{!item.Id}"
+                                                          label="Order Food"
+                                                          variant="brand"
+                                                          value="{!item.Cuisines__c}"
+                                                          onclick="{!c.navigateFood}"/>
+                                    </aura:set>
+                                    <aura:set attribute="footer">
+                                        <lightning:badge label="{!item.Review_Count__c +' Review'}"/>
+                                        <!--<lightning:badge label="{!item.Cuisines__c}"/>-->
+                                    </aura:set>
+                                </lightning:card>
+                            </div>
+                        </aura:if>
+                    </aura:iteration>
+                </div>
+            </lightning:tab>
+        </lightning:tabset>
+    </div>
+    
+    <!-- Loading Searched Restaurant Ends-->
+</aura:component>

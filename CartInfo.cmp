@@ -1,0 +1,16 @@
+<aura:component implements="force:appHostable,lightning:isUrlAddressable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes" 
+                access="global"
+                controller="CartDetailsController">
+    <aura:attribute name="foodcartItemList" type="Object"/>
+    <aura:attribute name="foodcartIdList" type="String[]"/>
+    <lightning:navigation aura:id="navigation"/>
+    <aura:handler name="change" value="{!v.foodcartItemList}" action="{!c.createCartItems}"/>
+    <lightning:layout>
+        <lightning:layoutItem>
+            <a href="Javascript:void(0);" onclick="{!c.goToCart}">
+                <lightning:icon iconName="utility:cart" size="large"/>
+            </a>
+            <span style="font-size: 1.1rem;">{!v.foodcartItemList.length}</span>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

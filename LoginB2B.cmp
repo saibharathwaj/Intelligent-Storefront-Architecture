@@ -1,0 +1,73 @@
+<aura:component implements="force:appHostable,lightning:isUrlAddressable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes"
+                access="global"
+                controller="LoginService">
+    <aura:attribute name="dealerUsername" type="String"/>
+    <aura:attribute name="supplierUsername" type="String"/>
+    <aura:attribute name="url" type="String"/>
+    <lightning:navigation aura:id="navService"/>
+    <aura:attribute name="pageReference" type="Object"/>
+    <aura:attribute name="accountList" type="Object"/>
+    <aura:attribute name="myOrderList" type="Orders__c[]"/>
+    <aura:attribute name="accountId" type="String"/>
+    <aura:attribute name="accountName" type="String"/>
+    <aura:attribute name="accountPhone" type="String"/>
+    <aura:attribute name="accountEmail" type="String"/>
+    <aura:attribute name="dealerFlag" type="Boolean"/>
+      <aura:attribute name="myColumns" type="List"/>
+    <div>
+        <aura:if isTrue="{!!v.dealerFlag}">
+        <div class="slds-brand-band slds-brand-band_large">
+            <div class="slds-grid slds-grid_vertical-align-center" style="height:600px; width:600px; position:fixed;
+                                                                          left:0; right:0;
+                                                                          margin:auto; bottom:0;top:0;">
+                <lightning:tabset variant="vertical">
+                   <lightning:tab label="Dealer" iconName="utility:user">
+                       <lightning:input type="email"
+                                       name="dealerUsername"
+                                       label="User Name"
+                                       value="{!v.dealerUsername}"/>
+                       <br/>
+                       <lightning:button variant="brand"
+                                         title="Login"
+                                         label="Login"
+                                         onclick="{!c.dealerLogin}"/>
+                   </lightning:tab>
+                   <lightning:tab label="Supplier" iconName="utility:user_role">
+                       <lightning:input type="email"
+                                        name="supplierUsername"
+                                        label="User Name"
+                                        value="{!v.supplierUsername}"/>
+                       <br/>
+                       <lightning:button variant="brand"
+                                         title="Login"
+                                         label="Login"
+                                         onclick="{!c.supplierLogin}"/>
+                   </lightning:tab>
+                </lightning:tabset>
+            </div>
+        </div>
+        </aura:if>
+    </div>
+    <div>
+        <aura:if isTrue="{!v.dealerFlag}">
+            <lightning:tabset variant="vertical">
+            <lightning:tab label="My Orders" iconName="standard:orders">
+                <lightning:datatable data="{!v.myOrderList}"
+                         columns="{!v.myColumns}"
+                         keyField="id"
+                         hideCheckboxColumn="true"/>
+            </lightning:tab>
+            <lightning:tab label="My Favourites" iconName="utility:favorite">
+                
+            </lightning:tab>
+        </lightning:tabset>
+            <br/>
+            <div>
+        <lightning:button variant="brand"
+                          label="Proceed to Shopping"
+                          title="Proceed to Shopping"
+                          onclick="{!c.navigateToShoppingPage}"/>
+    </div>
+        </aura:if>
+    </div>
+</aura:component>
